@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 @ComponentScan(basePackages = "kirdin.lab.services")
+@RequestMapping("cat_api/cat_db")
 @RestController
 public class CatController {
     private final CatService catService;
@@ -49,7 +51,8 @@ public class CatController {
         return new ResponseEntity<>(catService.findAllByBread(breed), HttpStatus.OK);
     }
 
-    @PostMapping("/cat")
+    @PostMapping("/add")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Cat> newOwner(@RequestBody Cat cat){
         return new ResponseEntity<>(catService.save(cat), HttpStatus.OK);
     }

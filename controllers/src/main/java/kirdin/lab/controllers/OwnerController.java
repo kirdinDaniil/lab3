@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 
 @AllArgsConstructor
 @ComponentScan(basePackages = "kirdin.lab.services")
+@RequestMapping("cat_api/owner_db")
 @RestController
 public class OwnerController {
     private final OwnerService ownerService;
