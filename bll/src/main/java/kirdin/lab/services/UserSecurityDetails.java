@@ -1,4 +1,4 @@
-package kirdin.lab.config;
+package kirdin.lab.services;
 
 import kirdin.lab.dal.models.UserSecurity;
 import lombok.AllArgsConstructor;
@@ -20,6 +20,10 @@ public class UserSecurityDetails implements UserDetails {
         List<String> test = new ArrayList<>();
         test.add(userSecurity.getRole());
         return test.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    public Long getOwnerId(){
+        return userSecurity.getOwner().getId();
     }
 
     @Override

@@ -1,15 +1,20 @@
 package kirdin.lab.dal.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "users")
+@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class)
 public class UserSecurity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +28,7 @@ public class UserSecurity {
 
     private String role;
 
-    @OneToOne(mappedBy = "user")
+    @JoinColumn(name = "owner_id")
+    @OneToOne(fetch = FetchType.EAGER)
     private Owner owner;
 }

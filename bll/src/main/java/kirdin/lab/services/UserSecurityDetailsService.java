@@ -1,16 +1,12 @@
 package kirdin.lab.services;
 
-import kirdin.lab.config.UserSecurityDetails;
 import kirdin.lab.dal.models.UserSecurity;
 import kirdin.lab.dal.repositories.UserSecurityRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +14,16 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@ComponentScan({"kirdin.lab.dal.repositories"})
+@ComponentScan(basePackages = "kirdin.lab.dal.repositories")
+@ComponentScan(basePackages = "kirdin.lab.bll.config")
 public class UserSecurityDetailsService implements UserDetailsService {
-    private UserSecurityRepository userSecurityRepository;
-    private PasswordEncoder passwordEncoder;
+
+
+
+    private final UserSecurityRepository userSecurityRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,7 +34,7 @@ public class UserSecurityDetailsService implements UserDetailsService {
 
     }
 
-    public UserSecurity add(UserSecurity userSecurity){
+    public UserSecurity addUser(UserSecurity userSecurity){
         userSecurity.setPassword(passwordEncoder.encode(userSecurity.getPassword()));
         return userSecurityRepository.save(userSecurity);
     }

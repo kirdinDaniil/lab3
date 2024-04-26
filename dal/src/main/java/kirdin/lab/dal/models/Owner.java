@@ -26,9 +26,6 @@ public class Owner {
 
     private Date birthdate;
 
-    @OneToOne
-    private UserSecurity user;
-
     @OneToMany(mappedBy = "owner",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
