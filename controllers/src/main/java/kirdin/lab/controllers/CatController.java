@@ -1,6 +1,7 @@
 package kirdin.lab.controllers;
 
 import kirdin.lab.dal.models.Cat;
+import kirdin.lab.dal.models.CatResponse;
 import kirdin.lab.dal.models.Color;
 import kirdin.lab.dal.models.Owner;
 import kirdin.lab.services.CatService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -20,14 +22,14 @@ public class CatController {
     private final CatService catService;
 
     @GetMapping("/cats")
-    public ResponseEntity<List<Cat>> getAll(){
-        return new ResponseEntity<>(catService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<CatResponse>> getAll(){
+        return new ResponseEntity<>(castCats(catService.getAll()), HttpStatus.OK);
     }
 
     @GetMapping("/cat/{id}")
     public ResponseEntity<?> getById(@PathVariable("id") Long id){
         try {
-            return new ResponseEntity<>(catService.findById(id).orElseThrow(), HttpStatus.OK);
+            return new ResponseEntity<>(new CatResponse(catService.findById(id).orElseThrow()), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),
                     String.format("Cat with id %d not found", id)), HttpStatus.NOT_FOUND);
@@ -35,23 +37,23 @@ public class CatController {
     }
 
     @GetMapping("/cat_coloring/{color}")
-    public ResponseEntity<List<Cat>> getByColoring(@PathVariable("color") Color color){
-        return new ResponseEntity<>(catService.findAllByColoring(color), HttpStatus.OK);
+    public ResponseEntity<List<CatResponse>> getByColoring(@PathVariable("color") Color color){
+        return new ResponseEntity<>(castCats(catService.findAllByColoring(color)), HttpStatus.OK);
     }
 
     @GetMapping("/cat_coloring/{name}")
-    public ResponseEntity<List<Cat>> getByName(@PathVariable("name") String name){
-        return new ResponseEntity<>(catService.findAllByName(name), HttpStatus.OK);
+    public ResponseEntity<List<CatResponse>> getByName(@PathVariable("name") String name){
+        return new ResponseEntity<>(castCats(catService.findAllByName(name)), HttpStatus.OK);
     }
 
     @GetMapping("/cat_coloring/{breed}")
-    public ResponseEntity<List<Cat>> getByColoring(@PathVariable("breed") String breed){
-        return new ResponseEntity<>(catService.findAllByBread(breed), HttpStatus.OK);
+    public ResponseEntity<List<CatResponse>> getByColoring(@PathVariable("breed") String breed){
+        return new ResponseEntity<>(castCats(catService.findAllByBread(breed)), HttpStatus.OK);
     }
 
     @PostMapping("/cat")
-    public ResponseEntity<Cat> newOwner(@RequestBody Cat cat){
-        return new ResponseEntity<>(catService.save(cat), HttpStatus.OK);
+    public ResponseEntity<?> newOwner(@RequestBody Cat cat){
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/cat/{id}")
@@ -90,5 +92,13 @@ public class CatController {
     public ResponseEntity<?> deleteOwner(@PathVariable("id") Long id){
         catService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public List<CatResponse> castCats(List<Cat> cats){
+        List<CatResponse> catResponses = new ArrayList<>();
+        for (Cat cat : cats){
+            catResponses.add(new CatResponse(cat));
+        }
+        return catResponses;
     }
 }
