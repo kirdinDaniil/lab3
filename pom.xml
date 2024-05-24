@@ -9,9 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>dal</module>
-        <module>bll</module>
-        <module>controllers</module>
+        <module>Models</module>
+        <module>catMs</module>
+        <module>ownerMs</module>
+        <module>externalInterfacesMs</module>
     </modules>
 
     <parent>
@@ -21,6 +22,13 @@
     </parent>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.ea.async/ea-async -->
+        <dependency>
+            <groupId>com.ea.async</groupId>
+            <artifactId>ea-async</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -83,6 +91,24 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
 
     </dependencies>

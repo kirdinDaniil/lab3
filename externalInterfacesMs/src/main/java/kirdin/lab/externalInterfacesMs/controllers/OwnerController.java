@@ -1,0 +1,68 @@
+package kirdin.lab.externalInterfacesMs.controllers;
+
+import kirdin.lab.externalInterfacesMs.Observers.OwnerConsumerObserver;
+import kirdin.lab.externalInterfacesMs.producers.OwnerProducer;
+import kirdin.lab.externalInterfacesMs.producers.util.MassageUtil;
+import kirdin.lab.models.dto.OwnerRequest;
+import kirdin.lab.models.dto.OwnerResponse;
+import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+@AllArgsConstructor
+@ComponentScan(basePackages = "kirdin.lab.services")
+@RestController
+public class OwnerController {
+    private final OwnerConsumerObserver ownerService;
+
+    private final OwnerProducer ownerProducer;
+
+    @GetMapping("/owners")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<List<OwnerResponse>> getAll(){
+        ownerProducer.sendMassage(MassageUtil.buildMessage("getAll", null));
+        return ownerService.getOwners();
+    }
+
+    @GetMapping("/owner/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getById(@PathVariable("id") Long id){
+        ownerProducer.sendMassage(MassageUtil.buildMessage("getById", id));
+        return ownerService.getOwners();
+    }
+
+    @GetMapping("/owners/{name}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<List<OwnerResponse>> getByName(@PathVariable("name") String name){
+        ownerProducer.sendMassage(MassageUtil.buildMessage("getById", name));
+        return ownerService.getOwners();
+    }
+
+    @PostMapping("/owner")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> newOwner(@RequestBody OwnerRequest ownerRequest){
+        ownerProducer.sendOwner(ownerRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/owner/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> persistOwner(@RequestBody OwnerRequest ownerRequest, @PathVariable("id") Long id){
+        ownerProducer.sendOwner(ownerRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/owner/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteOwner(@PathVariable("id") Long id){
+        ownerProducer.sendMassage(MassageUtil.buildMessage("deleteOwner", id));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+}
