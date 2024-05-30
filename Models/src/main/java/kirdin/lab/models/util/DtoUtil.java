@@ -28,7 +28,7 @@ public class DtoUtil {
     }
 
     public static Cat castCatRequestToCat(CatRequest catRequest){
-        return new Cat(catRequest.getName(), catRequest.getBirthdate(), catRequest.getBreed(), catRequest.getColoring());
+        return new Cat(catRequest.getName(), catRequest.getBirthdate(), catRequest.getBreed(), catRequest.getColoring(), catRequest.getOwner());
     }
 
     public static Owner castOwnerRequestToOwner(OwnerRequest ownerRequest){

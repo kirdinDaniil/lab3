@@ -18,8 +18,6 @@ public class CatProducer {
     @Value("${rabbitmq.routing.json.ms.cat.key}")
     private String routingJsonToMsKey;
 
-    @Value("${rabbitmq.routing.cat.key}")
-    private String routingMassageKey;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -33,9 +31,5 @@ public class CatProducer {
 
     public void sendCats(Pair<CatRequest, CatRequest> cats){
         rabbitTemplate.convertAndSend(exchange, routingJsonToMsKey, cats);
-    }
-
-    public void sendMassage(Message message){
-        rabbitTemplate.send(exchange, routingMassageKey, message);
     }
 }

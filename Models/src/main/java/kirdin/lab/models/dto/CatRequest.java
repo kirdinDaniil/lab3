@@ -3,6 +3,7 @@ package kirdin.lab.models.dto;
 
 import kirdin.lab.models.jpa.Cat;
 import kirdin.lab.models.jpa.Color;
+import kirdin.lab.models.jpa.Owner;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class CatRequest {
         birthdate = cat.getBirthdate();
         breed = cat.getBreed();
         coloring = cat.getColoring();
-        ownerId = cat.getOwner().getId();
+        owner = cat.getOwner();
     }
 
     private String name;
@@ -30,5 +31,5 @@ public class CatRequest {
 
     private Color coloring;
 
-    private Long ownerId;
+    private Owner owner;
 }

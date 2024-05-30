@@ -47,11 +47,12 @@ public class Cat {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    public Cat(String name, Date birthdate, String breed, Color coloring) {
+    public Cat(String name, Date birthdate, String breed, Color coloring, Owner owner) {
         this.birthdate = birthdate;
         this.name = name;
         this.breed = breed;
         this.coloring = coloring;
+        this.owner = owner;
         friends = new ArrayList<>();
         friendsOf = new ArrayList<>();
     }

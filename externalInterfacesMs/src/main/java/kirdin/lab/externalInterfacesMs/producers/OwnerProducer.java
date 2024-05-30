@@ -14,11 +14,8 @@ public class OwnerProducer {
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
 
-    @Value("${rabbitmq.routing.owner.key}")
-    private String routingJsonToMsKey;
-
     @Value("${rabbitmq.routing.json.ms.owner.key}")
-    private String routingMassageKey;
+    private String routingJsonToMsKey;
 
     private final RabbitTemplate rabbitTemplate;
 
@@ -27,10 +24,7 @@ public class OwnerProducer {
     }
 
     public void sendOwner(OwnerRequest owner){
-        rabbitTemplate.convertAndSend(exchange, routingJsonToMsKey, new OwnerRequest(owner.getName(), owner.getBirthdate()));
+        rabbitTemplate.convertAndSend(exchange, routingJsonToMsKey, new OwnerRequest(owner.getName(), owner.getBirthdate(), owner.getCats()));
     }
 
-    public void sendMassage(Message message){
-        rabbitTemplate.send(exchange, routingMassageKey, message);
-    }
 }

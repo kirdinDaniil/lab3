@@ -7,7 +7,6 @@ import org.springframework.amqp.core.MessagePropertiesBuilder;
 import java.nio.charset.StandardCharsets;
 
 public class MassageUtil {
-
     public static Message buildMessage(String operationType, Object value){
         MessageProperties props = MessagePropertiesBuilder
                 .newInstance()
